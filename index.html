@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    <meta charset="utf-8">
+    <title>RaphaelJS test</title>
+  
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="http://raphaeljs.com/raphael.js"></script>
+    
+        <script>
+        Raphael("holder", 640, 480, function () {
+            var r = this,
+//                o = r.path("M100,100S100,0,0,0S100,100,310,300").attr({"stroke-linecap": "round", "stroke-dasharray": "", stroke: "#fff", "stroke-width": 20}),
+                p = r.path("M100,100S120,150,300,200").attr({"stroke-dasharray": "-", stroke: "#000", "stroke-width": 5}),
+                over = r.path().attr({stroke: "#fff"}),
+                len = p.getTotalLength(),
+                e = r.circle(0, 0, 5, 5).attr({stroke: "none", fill: "#f00"});
+               r.customAttributes.along = function (v) {
+                           var point = p.getPointAtLength(v * len);
+                           return {
+                               transform: "t" + [point.x, point.y] + "r" + point.alpha
+                           };
+                       };
+              e.attr({along: 0});
+              
+              window._e = e;
+              
+
+              //run();
+              
+            
+            // var rotateAlongThePath = true;
+            // function run() {
+            //     e.animate({along: 1}, 2e4, function () {
+            //         e.attr({along: 0});
+            //         setTimeout(run);
+            //     });
+            // }
+            // run();
+        });
+        
+        function run() {
+                        window._e.animate({along: 1}, 1000, "<>", function () {
+                            window._e.attr({along: 0});
+                        });
+                    }
+        </script>
+        
+        <style>
+          body {
+            font-family: "American Typewriter", sans-serif;
+          }
+        </style>
+    </head>
+    <body>
+        <div id="wrapper" style="padding: 20px;box-shadow: #ccc 0 1px 2px; background-color: #f0f0f0; border: 1px solid #bbb; width: 640px; margin: auto; overflow: hidden;">
+          <a onClick="run(); return false;" style="display: inline-block;background-color: #000; padding: 8px 10px; border-radius: 4px; color: #fff; text-decoration: none;" href="#">Run!</a>
+          
+          <div id="holder"></div>
+        </div>
+    </body>
+
+</html>
+    
