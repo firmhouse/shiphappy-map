@@ -18,7 +18,7 @@
                       
             var path = "M320,50S250,100,300,200S320,300,260,430S400,500,310,900",
                 hidden_path = "M320,50S250,100,300,200S320,300,250,480S400,500,300,945",
-                o = r.path(path).attr({"stroke-linecap": "round", "stroke-dasharray": "", stroke: "#FFF", opacity: 0.5, "stroke-width": 20}),
+                //o = r.path(path).attr({"stroke-linecap": "round", "stroke-dasharray": "", stroke: "#FFF", opacity: 0.5, "stroke-width": 20}),
                 p = r.path(path).attr({"stroke-dasharray": "-", stroke: "#000", "stroke-width": 5}),
                 hp = r.path(hidden_path).attr({stroke: "rgba(0,0,0,0)"}),
                 len = p.getTotalLength(),
@@ -63,7 +63,7 @@
           html {
             margin: 0;
             padding: 0;
-            background: #000 url(images/chruch.png);
+            background: #efefef url(images/chruch.png);
             -webkit-box-shadow: rgba(0,0,0,0.1) 0 0 100px inset;
           }
           body {
@@ -91,9 +91,6 @@
         <div id="shadow_wrapper" style="padding: 20px; overflow: hidden;">
           <h1 style="text-shadow: #FFF 0 2px 0px; text-align: center; font-family: Delius; font-weight: bold; font-size: 70px; margin-bottom: 10px;">ShipHappy</h1>
           <h2 style="text-align: center; font-weight: normal; margin-top: 0; margin-bottom: 40px; opacity: .8;">Helping you ship Rails apps</h2>
-          <div class="marks_spot" style="position: absolute; top: 40px; left: 40px; -webkit-transform: rotate(-10deg); opacity: .05; font-size: 30px; display: inline-block;">
-            X marks the spot.
-          </div>
           <div id="wrapper" style="overflow: hidden; width: 640px; margin: auto; overflow: hidden; position: relative;">
             <div style="text-align: center;">
               <a onClick="run(); return false;" class="button" href="#">Learn more</a>
