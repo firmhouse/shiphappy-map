@@ -4,20 +4,30 @@
   <head>
     <meta charset="utf-8">
     <title>RaphaelJS test</title>
+    
+    <link href='http://fonts.googleapis.com/css?family=Delius' rel='stylesheet' type='text/css'>
   
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="http://raphaeljs.com/raphael.js"></script>
+    <script src="raphael.js"></script>
     
         <script>
-        Raphael("holder", 640, 480, function () {
+        Raphael("holder", 640, 1000, function () {
             var r = this,
-//                o = r.path("M100,100S100,0,0,0S100,100,310,300").attr({"stroke-linecap": "round", "stroke-dasharray": "", stroke: "#fff", "stroke-width": 20}),
-                p = r.path("M100,100S120,150,300,200").attr({"stroke-dasharray": "-", stroke: "#000", "stroke-width": 5}),
-                over = r.path().attr({stroke: "#fff"}),
+              c1 = r.path("M340,930L290,955").attr({"stroke-width": 4, "stroke-linecap": "round", stroke: "#000", opacity: 0}),
+              c2 = r.path("M280,935L330,965").attr({"stroke-width": 4, "stroke-linecap": "round", stroke: "#000", opacity: 0});
+                      
+            var path = "M320,50S250,100,300,200S320,300,260,430S400,500,310,900",
+                hidden_path = "M320,50S250,100,300,200S320,300,250,480S400,500,300,945",
+                o = r.path(path).attr({"stroke-linecap": "round", "stroke-dasharray": "", stroke: "#FFF", opacity: 0.5, "stroke-width": 20}),
+                p = r.path(path).attr({"stroke-dasharray": "-", stroke: "#000", "stroke-width": 5}),
+                hp = r.path(hidden_path).attr({stroke: "rgba(0,0,0,0)"}),
                 len = p.getTotalLength(),
-                e = r.circle(0, 0, 5, 5).attr({stroke: "none", fill: "#f00"});
+                e = r.ellipse(0, 0, 9, 8).attr({stroke: "none", fill: "#f00"});
+            
                r.customAttributes.along = function (v) {
                            var point = p.getPointAtLength(v * len);
+                           // $(window).scrollTop(point.y - 100);
+                           $('#shadow_wrapper').scrollTop(point.y -100);
                            return {
                                transform: "t" + [point.x, point.y] + "r" + point.alpha
                            };
@@ -25,39 +35,82 @@
               e.attr({along: 0});
               
               window._e = e;
-              
-
-              //run();
-              
-            
-            // var rotateAlongThePath = true;
-            // function run() {
-            //     e.animate({along: 1}, 2e4, function () {
-            //         e.attr({along: 0});
-            //         setTimeout(run);
-            //     });
-            // }
-            // run();
+              window._c1 = c1;
+              window._c2 = c2;
         });
         
         function run() {
-                        window._e.animate({along: 1}, 1000, "<>", function () {
-                            window._e.attr({along: 0});
+                        window._e.attr({along: 0});
+                        window._e.attr({fill: "#f00", rx: 12, ry: 11});
+                        window._e.attr({opacity: 1});
+                        $('.marks_spot').animate({opacity: 0}, 2000);
+                        window._e.animate({along: 1, fill: "#0a0"}, 2000, "<>", function () {
+                            window._e.animate({rx: 16, ry: 15}, 100);
+                            window._c1.animate({opacity: 1}, 200, function() {
+                              window._c2.animate({opacity: 1}, 200, function() {
+                                $('.next_step').animate({opacity: 1});
+                              });
+                            });
                         });
                     }
+        
+        $(document).ready(function() {
+          $('#shadow_wrapper').height($(window).height() - 40);
+        });
         </script>
         
         <style>
+          html {
+            margin: 0;
+            padding: 0;
+            background: #000 url(chruch.png);
+            -webkit-box-shadow: rgba(0,0,0,0.1) 0 0 100px inset;
+          }
           body {
-            font-family: "American Typewriter", sans-serif;
+            margin: 0;
+            font-family: "ProximaNova", "American Typewriter", sans-serif;
+          }
+          .button {
+            background-color: #666;
+            border-radius: 6px;
+            color: #FFF;
+            text-decoration: none;
+            padding: 10px;
+            display: inline-block;
+            text-shadow: #333 0 1px 0;
+            -webkit-box-shadow: rgba(0,0,0,0.2) 0 1px 2px;
+            -webkit-transition: all 0.2s linear;
+          }
+          
+          .button:hover {
+            background-color: #333;
           }
         </style>
     </head>
     <body>
-        <div id="wrapper" style="padding: 20px;box-shadow: #ccc 0 1px 2px; background-color: #f0f0f0; border: 1px solid #bbb; width: 640px; margin: auto; overflow: hidden;">
-          <a onClick="run(); return false;" style="display: inline-block;background-color: #000; padding: 8px 10px; border-radius: 4px; color: #fff; text-decoration: none;" href="#">Run!</a>
-          
-          <div id="holder"></div>
+        <div id="shadow_wrapper" style="padding: 20px; overflow: hidden;">
+          <h1 style="text-shadow: #FFF 0 2px 0px; text-align: center; font-family: Delius; font-weight: bold; font-size: 70px;">ShipHappy</h1>
+          <div class="marks_spot" style="position: absolute; top: 40px; left: 40px; -webkit-transform: rotate(-10deg); opacity: .05; font-size: 30px; display: inline-block;">
+            X marks the spot.
+          </div>
+          <div id="wrapper" style="overflow: hidden; width: 640px; margin: auto; overflow: hidden; position: relative;">
+            <div style="text-align: center;">
+              <a onClick="run(); return false;" class="button" href="#">Learn more</a>
+            </div>
+            
+            <div class="next_step" style="z-index: 2; position: fixed; opacity: 0; bottom: 100px; font-size: 20px; text-shadow: #FFF 0 1px 0; text-align: left;">
+              <p>Oh look. It's an X!</p>
+              <p>
+                <a href="#" class="button">Start digging</a>
+              </p>
+            </div>
+
+            
+            <div id="holder">
+            </div>
+            
+
+          </div>
         </div>
     </body>
 
